@@ -1,15 +1,26 @@
-def balance(chars: List[Char]): Boolean = {
-  def process(cs: List[Char], parans: Int): Boolean = cs match {
-    case Nil => if (parans == 0) true else false
-    case ')' :: _ if (parans < 1) => false
-    case ')' :: rest => process(rest, parans - 1)
-    case '(' :: rest => process(rest, parans + 1)
-    case _   :: rest => process(rest, parans)
-  }
-  process(chars, 0)
-}
+import recfun.Main._
 
-balance("(t(s))".toList)
+def countChange(money: Int, coins: List[Int]): Int =
+    if (money == 0) 1
+    else if (money < 0) 0
+    else if (!coins.isEmpty)
+      countChange(money, coins.sortWith(_ > _).tail) +
+        countChange(money - coins.sortWith(_ > _).head, coins)
+    else 0
+
+
+
+countChange(4,List(1,2)) // 3
+
+
+countChange(300,List(5,10,20,50,100,200,500)) // 1022
+
+
+countChange(301,List(5,10,20,50,100,200,500)) // 0
+
+
+countChange(300,List(500,5,50,100,20,200,10)) // 1022
+
 
 
 
